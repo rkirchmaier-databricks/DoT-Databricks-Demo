@@ -1,0 +1,21 @@
+-- Databricks notebook source
+-- MAGIC %python
+-- MAGIC
+-- MAGIC #target path to the data - in metastore
+-- MAGIC catalog = 'shared'
+-- MAGIC schema = '`romina-kirchmaier`'
+-- MAGIC spark.sql(f"USE CATALOG {catalog}")
+-- MAGIC spark.sql(f"USE SCHEMA {schema}")
+
+-- COMMAND ----------
+
+-- MAGIC %python
+-- MAGIC # Drop all tables within a schema
+-- MAGIC tables = spark.catalog.listTables(schema)
+-- MAGIC for table in tables:
+-- MAGIC     spark.sql(f"DROP TABLE {catalog}.{schema}.{table.name}")
+-- MAGIC
+-- MAGIC # Delete all volumes within a schema
+-- MAGIC volumes = spark.sql(f"SHOW VOLUMES IN {catalog}.{schema}").collect()
+-- MAGIC for volume in volumes:
+-- MAGIC     spark.sql(f"DROP VOLUME {catalog}.{schema}.{volume.volume_name}")
